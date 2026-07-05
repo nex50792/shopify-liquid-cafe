@@ -51,7 +51,8 @@
   },
   "products": {
     "sold_out": "Sold out",
-    "add_to_cart": "Add to cart"
+    "add_to_cart": "Add to cart",
+    "placeholder": "No products yet"
   },
   "subscription": {
     "save_percent": "Save {{ percent }}%",
