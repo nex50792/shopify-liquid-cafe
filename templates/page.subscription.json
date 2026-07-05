@@ -1,0 +1,89 @@
+{
+  "sections": {
+    "main": {
+      "type": "page",
+      "settings": {}
+    },
+    "benefits": {
+      "type": "subscription-benefits",
+      "blocks": {
+        "b1": {
+          "type": "benefit",
+          "settings": {
+            "icon": "☕",
+            "heading": "焙煎したてを直送",
+            "text": "注文の週に焙煎するので、店頭在庫にない鮮度でお届けします。"
+          }
+        },
+        "b2": {
+          "type": "benefit",
+          "settings": {
+            "icon": "🌱",
+            "heading": "定期便は 15% OFF",
+            "text": "定期便は毎回 15% 引き。単品購入より年間で数千円お得です。"
+          }
+        },
+        "b3": {
+          "type": "benefit",
+          "settings": {
+            "icon": "🚚",
+            "heading": "スキップ・変更自由",
+            "text": "旅行中や飲みきらないときは、いつでも 1 タップでスキップできます。"
+          }
+        },
+        "b4": {
+          "type": "benefit",
+          "settings": {
+            "icon": "📦",
+            "heading": "銘柄の切り替えも自由",
+            "text": "定期便を止めなくても、月ごとにシングルオリジンやブレンドを切り替えられます。"
+          }
+        }
+      },
+      "block_order": ["b1", "b2", "b3", "b4"],
+      "settings": {
+        "eyebrow": "定期便について",
+        "heading": "定期便で得られるもの"
+      }
+    },
+    "featured": {
+      "type": "featured-products",
+      "settings": {
+        "collection": "all",
+        "eyebrow": "最初の 1 袋を選ぶ",
+        "heading": "定期便対応のコーヒー",
+        "product_count": 4
+      }
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "blocks": {
+        "t1": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "自分の消費ペースにぴったり合う頻度を選べたので、飲み残しがなくなりました。",
+            "name": "R.S."
+          }
+        },
+        "t2": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "旅行前にスキップできたのが助かりました。",
+            "name": "D.M."
+          }
+        }
+      },
+      "block_order": ["t1", "t2"],
+      "settings": {
+        "heading": "定期便を利用中の方の声",
+        "columns": 2
+      }
+    }
+  },
+  "order": [
+    "main",
+    "benefits",
+    "featured",
+    "testimonials"
+  ]
+}

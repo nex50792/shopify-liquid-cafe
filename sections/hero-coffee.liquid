@@ -1,0 +1,147 @@
+{%- liquid
+  assign heading = section.settings.heading | default: '焙煎したてのコーヒーを、ご自宅へ。'
+  assign eyebrow = section.settings.eyebrow
+  assign subheading = section.settings.subheading
+  assign button_label = section.settings.button_label
+  assign button_url = section.settings.button_url
+  assign image = section.settings.image
+-%}
+
+<div class="hero full-width" data-section-id="{{ section.id }}">
+  {%- if image != blank -%}
+    <div class="hero__media">
+      {{ image | image_url: width: 2400 | image_tag:
+        loading: 'eager',
+        fetchpriority: 'high',
+        sizes: '100vw',
+        widths: '600, 900, 1200, 1800, 2400',
+        alt: image.alt | default: heading
+      }}
+    </div>
+  {%- endif -%}
+
+  <div class="hero__inner">
+    {%- if eyebrow != blank -%}
+      <span class="eyebrow hero__eyebrow">{{ eyebrow }}</span>
+    {%- endif -%}
+    <h1 class="hero__heading">{{ heading }}</h1>
+    {%- if subheading != blank -%}
+      <p class="hero__subheading">{{ subheading }}</p>
+    {%- endif -%}
+    {%- if button_label != blank and button_url != blank -%}
+      <a href="{{ button_url }}" class="button button--primary hero__cta">{{ button_label }}</a>
+    {%- endif -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .hero {
+    position: relative;
+    min-height: 70svh;
+    display: grid;
+    place-items: center;
+    padding: var(--space-2xl) var(--page-margin);
+    color: var(--color-background);
+    background-color: var(--color-accent-primary);
+    isolation: isolate;
+    overflow: hidden;
+  }
+
+  .hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+  }
+
+  .hero__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(180deg, rgba(43, 24, 16, 0.35) 0%, rgba(43, 24, 16, 0.65) 100%);
+  }
+
+  .hero__inner {
+    max-width: 44rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-md);
+  }
+
+  .hero__eyebrow {
+    color: var(--color-accent-secondary);
+    margin: 0;
+  }
+
+  .hero__heading {
+    color: var(--color-background);
+    font-size: clamp(2rem, 4.5vw, 3.75rem);
+    letter-spacing: 0.02em;
+  }
+
+  .hero__subheading {
+    font-size: 1.05rem;
+    color: rgba(255, 255, 255, 0.88);
+    max-width: 30rem;
+    line-height: 1.7;
+  }
+
+  .hero__cta {
+    margin-top: var(--space-sm);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.hero_coffee.name",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:labels.image"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:labels.eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:labels.heading",
+      "default": "焙煎したてのコーヒーを、ご自宅へ。"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "t:labels.subheading",
+      "default": "小さな農園の豆を、ご注文の週に焙煎してお届けします。焙煎日は袋にも記載しています。"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "t:labels.button_label",
+      "default": "コーヒー豆をみる"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "t:labels.button_url"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.hero_coffee.presets.default",
+      "category": "Coffee"
+    }
+  ]
+}
+{% endschema %}

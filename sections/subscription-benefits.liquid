@@ -1,0 +1,163 @@
+{%- liquid
+  assign heading = section.settings.heading | default: '定期便のメリット'
+  assign eyebrow = section.settings.eyebrow
+  assign subheading = section.settings.subheading
+-%}
+
+<section class="benefits" data-section-id="{{ section.id }}">
+  <div class="benefits__header">
+    {%- if eyebrow != blank -%}
+      <span class="eyebrow">{{ eyebrow }}</span>
+    {%- endif -%}
+    <h2 class="benefits__heading">{{ heading }}</h2>
+    {%- if subheading != blank -%}
+      <p class="benefits__subheading">{{ subheading }}</p>
+    {%- endif -%}
+  </div>
+
+  {%- if section.blocks.size > 0 -%}
+    <ul class="benefits__grid" role="list">
+      {%- for block in section.blocks -%}
+        <li class="benefits__item" {{ block.shopify_attributes }}>
+          {%- if block.settings.icon != blank -%}
+            <div class="benefits__icon" aria-hidden="true">{{ block.settings.icon }}</div>
+          {%- endif -%}
+          <h3 class="benefits__title">{{ block.settings.heading }}</h3>
+          <p class="benefits__description">{{ block.settings.text }}</p>
+        </li>
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+</section>
+
+{% stylesheet %}
+  .benefits {
+    padding-block: var(--space-2xl);
+    background-color: var(--color-surface);
+  }
+
+  .benefits__header {
+    text-align: center;
+    margin-block-end: var(--space-lg);
+    max-width: 40rem;
+    margin-inline: auto;
+  }
+
+  .benefits__subheading {
+    margin-block-start: var(--space-sm);
+    color: color-mix(in oklab, var(--color-foreground) 75%, transparent);
+  }
+
+  .benefits__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--space-lg);
+    padding: 0;
+    list-style: none;
+  }
+
+  .benefits__item {
+    text-align: center;
+    padding: var(--space-lg) var(--space-md);
+  }
+
+  .benefits__icon {
+    font-size: 2.5rem;
+    line-height: 1;
+    margin-block-end: var(--space-sm);
+  }
+
+  .benefits__title {
+    margin-block-end: var(--space-xs);
+  }
+
+  .benefits__description {
+    color: color-mix(in oklab, var(--color-foreground) 75%, transparent);
+    font-size: 0.95rem;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.subscription_benefits.name",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:labels.eyebrow",
+      "default": "定期便でお得に"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:labels.heading",
+      "default": "定期便のメリット"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "t:labels.subheading"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "t:sections.subscription_benefits.blocks.benefit.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "t:labels.icon",
+          "info": "絵文字か 1 文字を推奨",
+          "default": "☕"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:labels.heading",
+          "default": "送料無料"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "t:labels.text",
+          "default": "全国どこでも送料無料でお届けします。"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.subscription_benefits.presets.default",
+      "category": "Coffee",
+      "blocks": [
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "☕",
+            "heading": "焙煎したてを直送",
+            "text": "注文の週に焙煎するので、店頭在庫にない鮮度でお届けします。"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "🌱",
+            "heading": "定期便は 15% OFF",
+            "text": "定期便は毎回 15% 引き。単品購入より年間で数千円お得です。"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "icon": "🚚",
+            "heading": "スキップ・変更自由",
+            "text": "旅行中や飲みきらないときは、いつでも 1 タップでスキップできます。"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

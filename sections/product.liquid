@@ -1,0 +1,138 @@
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+-%}
+
+<div class="product">
+  <div class="product__media">
+    {%- for image in product.images -%}
+      {%- if forloop.first -%}
+        {{ image | image_url: width: 1200 | image_tag:
+          loading: 'eager',
+          fetchpriority: 'high',
+          widths: '400, 600, 900, 1200',
+          sizes: '(min-width: 900px) 50vw, 100vw',
+          class: 'product__image',
+          alt: image.alt | default: product.title
+        }}
+      {%- else -%}
+        {{ image | image_url: width: 1200 | image_tag:
+          loading: 'lazy',
+          widths: '400, 600, 900, 1200',
+          sizes: '(min-width: 900px) 50vw, 100vw',
+          class: 'product__image',
+          alt: image.alt | default: product.title
+        }}
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+
+  <div class="product__info">
+    {%- render 'coffee-badge', product: product -%}
+
+    <h1 class="product__title">{{ product.title }}</h1>
+    <p class="product__price">{{ current_variant.price | money }}</p>
+
+    <div class="product__description">{{ product.description }}</div>
+
+    {%- render 'subscription-savings', product: product -%}
+
+    {% form 'product', product, class: 'product__form' %}
+      {%- if product.variants.size > 1 -%}
+        <label for="variant-select-{{ section.id }}">オプション</label>
+        <select id="variant-select-{{ section.id }}" name="id">
+          {%- for variant in product.variants -%}
+            <option
+              value="{{ variant.id }}"
+              {% if variant == current_variant %}selected{% endif %}
+            >{{ variant.title }} — {{ variant.price | money }}</option>
+          {%- endfor -%}
+        </select>
+      {%- else -%}
+        <input type="hidden" name="id" value="{{ current_variant.id }}">
+      {%- endif -%}
+
+      <label for="quantity-{{ section.id }}">数量</label>
+      <input id="quantity-{{ section.id }}" type="number" name="quantity" min="1" value="1" data-bundle-qty>
+
+      <div data-bundle-preview>
+        {%- render 'bundle-price', product: product, quantity: 1 -%}
+      </div>
+
+      <button type="submit" class="button button--primary">{{ 'products.add_to_cart' | t }}</button>
+      {{ form | payment_button }}
+    {% endform %}
+  </div>
+</div>
+
+{% stylesheet %}
+  .product {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl);
+    padding-block: var(--space-xl);
+    align-items: start;
+  }
+
+  @media (max-width: 900px) {
+    .product {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .product__media {
+    position: relative;
+    display: grid;
+    gap: var(--space-sm);
+  }
+
+  .product__image {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+  }
+
+  .product__info {
+    position: sticky;
+    top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .product__title {
+    font-size: 2.25rem;
+  }
+
+  .product__price {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-accent-primary);
+  }
+
+  .product__description {
+    line-height: 1.7;
+  }
+
+  .product__form {
+    display: grid;
+    gap: var(--space-sm);
+    margin-top: var(--space-md);
+  }
+
+  .product__form select,
+  .product__form input[type="number"] {
+    padding: 0.6rem 0.75rem;
+    border: 1px solid color-mix(in oklab, var(--color-foreground) 20%, transparent);
+    background: var(--color-background);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:general.product",
+  "settings": [],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

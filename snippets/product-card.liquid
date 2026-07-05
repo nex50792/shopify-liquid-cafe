@@ -1,0 +1,50 @@
+{%- comment -%}
+  Accepts:
+    product: {Object} — Product object, or null for placeholder
+{%- endcomment -%}
+
+{%- if product == blank -%}
+  <article class="product-card product-card--placeholder">
+    <div class="product-card__media">
+      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    </div>
+    <div class="product-card__body">
+      <h3 class="product-card__title">{{ 'products.sold_out' | t | prepend: '—' }}</h3>
+      <p class="product-card__price">—</p>
+    </div>
+  </article>
+{%- else -%}
+  <article class="product-card">
+    <a href="{{ product.url }}" class="product-card__link">
+      <div class="product-card__media">
+        {%- if product.featured_image != blank -%}
+          {{ product.featured_image | image_url: width: 800 | image_tag:
+            loading: 'lazy',
+            widths: '240, 360, 540, 720, 800',
+            sizes: '(min-width: 900px) 240px, 45vw',
+            alt: product.featured_image.alt | default: product.title
+          }}
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+
+        {%- render 'coffee-badge', product: product -%}
+      </div>
+
+      <div class="product-card__body">
+        <h3 class="product-card__title">{{ product.title }}</h3>
+
+        <p class="product-card__price">
+          {%- if product.compare_at_price > product.price -%}
+            <span class="product-card__price--sale">{{ product.price | money }}</span>
+            <s class="product-card__price--compare">{{ product.compare_at_price | money }}</s>
+          {%- else -%}
+            {{ product.price | money }}
+          {%- endif -%}
+        </p>
+
+        {%- render 'subscription-savings', product: product -%}
+      </div>
+    </a>
+  </article>
+{%- endif -%}

@@ -1,0 +1,57 @@
+{
+  "sections": {
+    "main": {
+      "type": "page",
+      "settings": {}
+    },
+    "brewing": {
+      "type": "brewing-guide",
+      "blocks": {
+        "s1": {
+          "type": "step",
+          "settings": {
+            "heading": "湯を 92°C まで沸かす",
+            "text": "浄水した水を沸騰させ、火から下ろして 30 秒ほど落ち着かせます。"
+          }
+        },
+        "s2": {
+          "type": "step",
+          "settings": {
+            "heading": "豆を 15g、中挽きで挽く",
+            "text": "食塩より粗く、天然塩より細かい粒度を目安に。"
+          }
+        },
+        "s3": {
+          "type": "step",
+          "settings": {
+            "heading": "30 秒蒸らす",
+            "text": "50g の湯を注ぎ、泡が落ち着くまで待ちます。"
+          }
+        },
+        "s4": {
+          "type": "step",
+          "settings": {
+            "heading": "残りの湯 200g をゆっくり注ぐ",
+            "text": "抽出時間の目安は合計 3:00〜3:30 です。"
+          }
+        },
+        "s5": {
+          "type": "step",
+          "settings": {
+            "heading": "そのまま、またはアイスで",
+            "text": "冷やして飲む場合は、100g の氷に直接抽出してアイスコーヒーに。"
+          }
+        }
+      },
+      "block_order": ["s1", "s2", "s3", "s4", "s5"],
+      "settings": {
+        "eyebrow": "淹れ方",
+        "heading": "ハンドドリップの手順"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "brewing"
+  ]
+}

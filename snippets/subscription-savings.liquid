@@ -1,0 +1,47 @@
+{%- comment -%}
+  Accepts:
+    product: {Object}
+  Reads product.metafields.custom.subscription_discount_percent (integer)
+  Shows subscription savings on product card if the product supports selling_plans.
+{%- endcomment -%}
+
+{%- liquid
+  assign discount_percent = product.metafields.custom.subscription_discount_percent.value | plus: 0
+  assign has_selling_plan = false
+  if product.selling_plan_groups.size > 0
+    assign has_selling_plan = true
+  endif
+-%}
+
+{%- if has_selling_plan and discount_percent > 0 -%}
+  {%- assign multiplier = 100 | minus: discount_percent -%}
+  {%- assign discounted = product.price | times: multiplier | divided_by: 100 -%}
+
+  <p class="subscription-savings">
+    <span class="subscription-savings__badge">
+      {{- 'subscription.save_percent' | t: percent: discount_percent -}}
+    </span>
+    <span class="subscription-savings__price">{{ discounted | money }}</span>
+  </p>
+
+  {%- style -%}
+    .subscription-savings {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+      margin-block-start: var(--space-xs);
+      font-size: 0.85rem;
+    }
+    .subscription-savings__badge {
+      padding: 0.15rem 0.5rem;
+      background: var(--color-accent-primary);
+      color: var(--color-background);
+      border-radius: 3px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+    .subscription-savings__price {
+      font-weight: 600;
+    }
+  {%- endstyle -%}
+{%- endif -%}

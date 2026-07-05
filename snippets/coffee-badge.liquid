@@ -1,0 +1,45 @@
+{%- comment -%}
+  Accepts:
+    product: {Object}
+  Reads product.metafields.custom.roast_level (light | medium | dark)
+{%- endcomment -%}
+
+{%- liquid
+  assign roast = product.metafields.custom.roast_level.value | downcase
+  case roast
+    when 'light'
+      assign label = '浅煎り'
+      assign dots = '●○○'
+    when 'medium'
+      assign label = '中煎り'
+      assign dots = '●●○'
+    when 'dark'
+      assign label = '深煎り'
+      assign dots = '●●●'
+  endcase
+-%}
+
+{%- if roast != blank -%}
+  <span class="coffee-badge coffee-badge--{{ roast }}" aria-label="焙煎度: {{ label }}">
+    {{ dots }}
+    <span class="coffee-badge__label">{{ label }}</span>
+  </span>
+{%- endif -%}
+
+{%- style -%}
+  .coffee-badge {
+    position: absolute;
+    top: var(--space-sm);
+    left: var(--space-sm);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.6rem;
+    background: color-mix(in oklab, var(--color-background) 92%, transparent);
+    color: var(--color-foreground);
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    border-radius: 2rem;
+    backdrop-filter: blur(6px);
+  }
+{%- endstyle -%}

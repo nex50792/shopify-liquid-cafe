@@ -1,0 +1,54 @@
+{%- comment -%}
+  Accepts:
+    product: {Object}
+    quantity: {Integer} (default 1)
+  Reads bundle tiers from product.metafields.custom.bundle_tiers (JSON list of {min_qty, discount_percent}).
+  Selects the highest applicable tier and shows the discounted line price.
+{%- endcomment -%}
+
+{%- liquid
+  assign quantity = quantity | default: 1 | plus: 0
+  assign tiers = product.metafields.custom.bundle_tiers.value
+  assign applied_percent = 0
+  if tiers != blank
+    for tier in tiers
+      if quantity >= tier.min_qty and tier.discount_percent > applied_percent
+        assign applied_percent = tier.discount_percent
+      endif
+    endfor
+  endif
+-%}
+
+{%- if applied_percent > 0 -%}
+  {%- assign multiplier = 100 | minus: applied_percent -%}
+  {%- assign unit_price = product.price | times: multiplier | divided_by: 100 -%}
+  {%- assign line_total = unit_price | times: quantity -%}
+
+  <div class="bundle-price">
+    <span class="bundle-price__eyebrow">
+      {{- quantity }}× {{ 'subscription.save_percent' | t: percent: applied_percent -}}
+    </span>
+    <span class="bundle-price__amount">{{ line_total | money }}</span>
+  </div>
+
+  {%- style -%}
+    .bundle-price {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: var(--space-sm);
+      background: var(--color-surface);
+      border-radius: 4px;
+    }
+    .bundle-price__eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color-accent-primary);
+    }
+    .bundle-price__amount {
+      font-family: var(--font-heading--family);
+      font-size: 1.5rem;
+    }
+  {%- endstyle -%}
+{%- endif -%}

@@ -1,0 +1,128 @@
+{%- liquid
+  assign heading = section.settings.heading | default: '週末のブリューノート'
+  assign eyebrow = section.settings.eyebrow
+  assign subheading = section.settings.subheading
+-%}
+
+<section class="newsletter" data-section-id="{{ section.id }}">
+  <div class="newsletter__inner">
+    {%- if eyebrow != blank -%}
+      <span class="eyebrow">{{ eyebrow }}</span>
+    {%- endif -%}
+    <h2 class="newsletter__heading">{{ heading }}</h2>
+    {%- if subheading != blank -%}
+      <p class="newsletter__subheading">{{ subheading }}</p>
+    {%- endif -%}
+
+    {% form 'customer', class: 'newsletter__form' %}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <label for="newsletter-email-{{ section.id }}" class="visually-hidden">
+        {{ 'newsletter.email_placeholder' | t }}
+      </label>
+      <input
+        id="newsletter-email-{{ section.id }}"
+        type="email"
+        name="contact[email]"
+        placeholder="{{ 'newsletter.email_placeholder' | t }}"
+        autocomplete="email"
+        required
+      >
+      <button type="submit" class="button button--primary">
+        {{ 'newsletter.submit' | t }}
+      </button>
+
+      {%- if form.posted_successfully? -%}
+        <p class="newsletter__success" role="status">{{ 'newsletter.success' | t }}</p>
+      {%- endif -%}
+    {% endform %}
+
+    <p class="newsletter__note">{{ 'newsletter.privacy_note' | t }}</p>
+  </div>
+</section>
+
+{% stylesheet %}
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .newsletter {
+    padding-block: var(--space-2xl);
+  }
+
+  .newsletter__inner {
+    max-width: 36rem;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .newsletter__subheading {
+    margin-block: var(--space-sm) var(--space-md);
+    color: color-mix(in oklab, var(--color-foreground) 75%, transparent);
+  }
+
+  .newsletter__form {
+    display: flex;
+    gap: var(--space-xs);
+    margin-block-end: var(--space-sm);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .newsletter__form input[type="email"] {
+    flex: 1 1 16rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid color-mix(in oklab, var(--color-foreground) 20%, transparent);
+    background: var(--color-background);
+    color: var(--color-foreground);
+  }
+
+  .newsletter__success {
+    flex: 1 1 100%;
+    color: var(--color-accent-primary);
+    margin-block-start: var(--space-xs);
+  }
+
+  .newsletter__note {
+    font-size: 0.85rem;
+    color: color-mix(in oklab, var(--color-foreground) 60%, transparent);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.newsletter_coffee.name",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:labels.eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:labels.heading",
+      "default": "週末のブリューノート"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "t:labels.subheading",
+      "default": "毎週日曜、テイスティングノートと抽出のヒント、そして焙煎所の近況をお届けします。"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.newsletter_coffee.presets.default",
+      "category": "Coffee"
+    }
+  ]
+}
+{% endschema %}

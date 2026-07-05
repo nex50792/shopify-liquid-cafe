@@ -1,0 +1,94 @@
+{%- liquid
+  assign collection = collections[section.settings.collection]
+  if collection == blank or collection.products.size == 0
+    assign collection = collections.all
+  endif
+  assign product_count = section.settings.product_count | default: 4
+  assign heading = section.settings.heading | default: '新入荷のコーヒー豆'
+  assign eyebrow = section.settings.eyebrow
+-%}
+
+<section class="featured-products" data-section-id="{{ section.id }}">
+  <div class="featured-products__header">
+    {%- if eyebrow != blank -%}
+      <span class="eyebrow">{{ eyebrow }}</span>
+    {%- endif -%}
+    <h2 class="featured-products__heading">{{ heading }}</h2>
+  </div>
+
+  {%- if collection.products.size > 0 -%}
+    <ul class="featured-products__grid" role="list">
+      {%- for product in collection.products limit: product_count -%}
+        <li class="featured-products__item">
+          {% render 'product-card', product: product %}
+        </li>
+      {%- endfor -%}
+    </ul>
+  {%- else -%}
+    <ul class="featured-products__grid" role="list">
+      {%- for i in (1..product_count) -%}
+        <li class="featured-products__item">
+          {% render 'product-card', product: null %}
+        </li>
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+</section>
+
+{% stylesheet %}
+  .featured-products {
+    padding-block: var(--space-2xl);
+  }
+
+  .featured-products__header {
+    text-align: center;
+    margin-block-end: var(--space-lg);
+  }
+
+  .featured-products__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--space-lg);
+    padding: 0;
+    list-style: none;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.featured_products.name",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:labels.eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:labels.heading",
+      "default": "新入荷のコーヒー豆"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "t:labels.collection"
+    },
+    {
+      "type": "range",
+      "id": "product_count",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "label": "t:labels.product_count",
+      "default": 4
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.featured_products.presets.default",
+      "category": "Coffee"
+    }
+  ]
+}
+{% endschema %}

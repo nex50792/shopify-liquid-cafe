@@ -1,0 +1,81 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-coffee",
+      "settings": {
+        "heading": "焙煎したてのコーヒーを、ご自宅へ。",
+        "subheading": "ご注文の週に焙煎してお届けします。焙煎日は袋にも記載しています。",
+        "button_label": "コーヒー豆をみる",
+        "button_url": "/collections/all"
+      }
+    },
+    "featured": {
+      "type": "featured-products",
+      "settings": {
+        "collection": "all",
+        "heading": "新入荷のコーヒー豆",
+        "product_count": 4
+      }
+    },
+    "origin": {
+      "type": "origin-story",
+      "settings": {
+        "heading": "豆と、じっくり向き合う。",
+        "body": "<p>都内の小さな焙煎所で、豆を少しずつ焙煎しています。週に 3 回、その週にご注文いただいた分だけ火を入れます。</p><p>焙煎した豆はその日のうちに味を確かめ、翌朝もう一度飲んで納得できたものだけを袋に詰めています。銘柄は季節ごとに 5〜6 種類。産地はできるだけ農園単位で選んで仕入れています。</p>"
+      }
+    },
+    "brewing": {
+      "type": "brewing-guide",
+      "blocks": {
+        "s1": {
+          "type": "step",
+          "settings": {
+            "heading": "湯を 92°C に。",
+            "text": "浄水を沸騰させ、火から下ろして 30 秒ほど置きます。"
+          }
+        },
+        "s2": {
+          "type": "step",
+          "settings": {
+            "heading": "豆を 15g、中挽きに。",
+            "text": "食塩よりやや粗く、天然塩より細かい粒度が目安です。"
+          }
+        },
+        "s3": {
+          "type": "step",
+          "settings": {
+            "heading": "30 秒、蒸らします。",
+            "text": "湯を 50g 注ぎ、泡が落ち着くまで待ちます。"
+          }
+        },
+        "s4": {
+          "type": "step",
+          "settings": {
+            "heading": "残り 200g を、ゆっくり注ぎます。",
+            "text": "抽出時間の目安は合計 3:00〜3:30 です。"
+          }
+        }
+      },
+      "block_order": ["s1", "s2", "s3", "s4"],
+      "settings": {
+        "heading": "淹れ方"
+      }
+    },
+    "calc": {
+      "type": "subscription-calculator",
+      "settings": {
+        "heading": "定期便の月々の目安",
+        "note": "1 回のお届け量と頻度から、月々の目安を計算します。定期便は 15% 割引でお届けします。",
+        "base_price": 1800,
+        "discount_percent": 15
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "featured",
+    "origin",
+    "brewing",
+    "calc"
+  ]
+}

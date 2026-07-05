@@ -1,0 +1,149 @@
+{%- liquid
+  assign heading = section.settings.heading | default: '定期便の月々の目安'
+  assign eyebrow = section.settings.eyebrow
+  assign base_price = section.settings.base_price | default: 1800
+  assign discount = section.settings.discount_percent | default: 15
+-%}
+
+<script src="{{ 'subscription-calculator.js' | asset_url }}" defer></script>
+
+<section class="calc" data-section-id="{{ section.id }}">
+  <div class="calc__header">
+    {%- if eyebrow != blank -%}
+      <span class="eyebrow">{{ eyebrow }}</span>
+    {%- endif -%}
+    <h2 class="calc__heading">{{ heading }}</h2>
+    {%- if section.settings.note != blank -%}
+      <p class="calc__note">{{ section.settings.note }}</p>
+    {%- endif -%}
+  </div>
+
+  <subscription-calculator
+    class="calc__widget"
+    base-price="{{ base_price }}"
+    discount="{{ discount }}"
+    currency-code="{{ shop.currency }}"
+  ></subscription-calculator>
+</section>
+
+{% stylesheet %}
+  .calc {
+    padding-block: var(--space-2xl);
+  }
+
+  .calc__header {
+    text-align: center;
+    margin-block-end: var(--space-lg);
+    max-width: 32rem;
+    margin-inline: auto;
+  }
+
+  .calc__note {
+    margin-block-start: var(--space-sm);
+    color: color-mix(in oklab, var(--color-foreground) 70%, transparent);
+    font-size: 0.95rem;
+  }
+
+  .calc__widget {
+    display: grid;
+    gap: var(--space-md);
+    max-width: 32rem;
+    margin-inline: auto;
+    padding: var(--space-lg);
+    background: var(--color-surface);
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .calc__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .calc__label {
+    font-weight: 500;
+  }
+
+  .calc__row input,
+  .calc__row select {
+    padding: 0.55rem 0.75rem;
+    border: 1px solid color-mix(in oklab, var(--color-foreground) 20%, transparent);
+    background: var(--color-background);
+    min-width: 8rem;
+  }
+
+  .calc__result {
+    margin-block-start: var(--space-sm);
+    padding-block-start: var(--space-md);
+    border-block-start: 1px solid color-mix(in oklab, var(--color-foreground) 12%, transparent);
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .calc__result-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+
+  .calc__result-row--highlight {
+    font-family: var(--font-heading--family);
+    font-size: 1.25rem;
+    color: var(--color-accent-primary);
+    font-weight: 700;
+  }
+
+  .calc__savings {
+    margin-block-start: var(--space-xs);
+    font-size: 0.9rem;
+    color: color-mix(in oklab, var(--color-foreground) 75%, transparent);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "定期便コスト試算",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:labels.eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:labels.heading",
+      "default": "定期便の月々の目安"
+    },
+    {
+      "type": "textarea",
+      "id": "note",
+      "label": "補足文",
+      "default": "1 回のお届け量と頻度から、月々の目安を計算します。定期便は 15% 割引でお届けします。"
+    },
+    {
+      "type": "number",
+      "id": "base_price",
+      "label": "1 袋の基準価格(ストア通貨単位、整数)",
+      "default": 1800
+    },
+    {
+      "type": "range",
+      "id": "discount_percent",
+      "label": "定期便の割引率 %",
+      "min": 0,
+      "max": 30,
+      "step": 5,
+      "default": 15
+    }
+  ],
+  "presets": [
+    {
+      "name": "定期便コスト試算",
+      "category": "Coffee"
+    }
+  ]
+}
+{% endschema %}

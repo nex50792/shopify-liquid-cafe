@@ -1,0 +1,124 @@
+{%- liquid
+  assign heading = section.settings.heading | default: '豆と、じっくり向き合う。'
+  assign eyebrow = section.settings.eyebrow
+  assign body = section.settings.body
+  assign image = section.settings.image
+  assign button_label = section.settings.button_label
+  assign button_url = section.settings.button_url
+-%}
+
+<section class="origin" data-section-id="{{ section.id }}">
+  <div class="origin__grid">
+    {%- if image != blank -%}
+      <div class="origin__media">
+        {{ image | image_url: width: 1400 | image_tag:
+          loading: 'lazy',
+          sizes: '(min-width: 900px) 50vw, 100vw',
+          widths: '400, 600, 900, 1200, 1400',
+          alt: image.alt | default: heading
+        }}
+      </div>
+    {%- endif -%}
+
+    <div class="origin__content">
+      {%- if eyebrow != blank -%}
+        <span class="eyebrow">{{ eyebrow }}</span>
+      {%- endif -%}
+      <h2 class="origin__heading">{{ heading }}</h2>
+      {%- if body != blank -%}
+        <div class="origin__body">{{ body }}</div>
+      {%- endif -%}
+      {%- if button_label != blank and button_url != blank -%}
+        <a href="{{ button_url }}" class="button button--secondary origin__cta">{{ button_label }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .origin {
+    padding-block: var(--space-2xl);
+  }
+
+  .origin__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+
+  @media (max-width: 900px) {
+    .origin__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .origin__media img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+
+  .origin__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    max-width: 36rem;
+  }
+
+  .origin__body {
+    line-height: 1.75;
+  }
+
+  .origin__cta {
+    align-self: flex-start;
+    margin-top: var(--space-sm);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.origin_story.name",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:labels.image"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:labels.eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:labels.heading",
+      "default": "豆と、じっくり向き合う。"
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "t:labels.description",
+      "default": "<p>都内の小さな焙煎所で、豆を少しずつ焙煎しています。週に 3 回、その週にご注文いただいた分だけ火を入れます。</p><p>焙煎した豆はその日のうちに味を確かめ、翌朝もう一度飲んで納得できたものだけを袋に詰めています。銘柄は季節ごとに 5〜6 種類。産地はできるだけ農園単位で選んで仕入れています。</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "t:labels.button_label"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "t:labels.button_url"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.origin_story.presets.default",
+      "category": "Coffee"
+    }
+  ]
+}
+{% endschema %}

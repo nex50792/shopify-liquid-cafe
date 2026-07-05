@@ -1,0 +1,189 @@
+{%- liquid
+  assign heading = section.settings.heading | default: '定期便ユーザーの声'
+  assign eyebrow = section.settings.eyebrow
+  assign columns = section.settings.columns | default: 3
+-%}
+
+<section class="testimonials" data-section-id="{{ section.id }}">
+  <div class="testimonials__header">
+    {%- if eyebrow != blank -%}
+      <span class="eyebrow">{{ eyebrow }}</span>
+    {%- endif -%}
+    <h2 class="testimonials__heading">{{ heading }}</h2>
+  </div>
+
+  {%- if section.blocks.size > 0 -%}
+    <ul class="testimonials__grid" role="list" style="--columns: {{ columns }};">
+      {%- for block in section.blocks -%}
+        <li class="testimonials__item" {{ block.shopify_attributes }}>
+          <blockquote class="testimonials__quote">
+            <p>{{ block.settings.quote }}</p>
+          </blockquote>
+          <cite class="testimonials__cite">
+            {%- if block.settings.avatar != blank -%}
+              {{ block.settings.avatar | image_url: width: 96 | image_tag:
+                loading: 'lazy',
+                widths: '48, 96, 144',
+                sizes: '48px',
+                class: 'testimonials__avatar',
+                alt: block.settings.name
+              }}
+            {%- endif -%}
+            <span class="testimonials__name">{{ block.settings.name }}</span>
+          </cite>
+        </li>
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+</section>
+
+{% stylesheet %}
+  .testimonials {
+    padding-block: var(--space-2xl);
+    background-color: var(--color-surface);
+  }
+
+  .testimonials__header {
+    text-align: center;
+    margin-block-end: var(--space-lg);
+  }
+
+  .testimonials__grid {
+    display: grid;
+    grid-template-columns: repeat(var(--columns, 3), 1fr);
+    gap: var(--space-md);
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (max-width: 900px) {
+    .testimonials__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .testimonials__item {
+    background-color: var(--color-background);
+    padding: var(--space-lg);
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .testimonials__quote p {
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+
+  .testimonials__quote p::before {
+    content: '「';
+    color: var(--color-accent-primary);
+    font-family: var(--font-heading--family);
+    font-size: 2rem;
+    line-height: 0;
+    vertical-align: -0.3em;
+    margin-inline-end: 0.05em;
+  }
+
+  .testimonials__cite {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-style: normal;
+    margin-block-start: auto;
+  }
+
+  .testimonials__avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .testimonials__name {
+    font-weight: 600;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.testimonials.name",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "t:labels.eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:labels.heading",
+      "default": "定期便ユーザーの声"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "label": "t:labels.columns",
+      "default": 3
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "t:sections.testimonials.blocks.testimonial.name",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "t:labels.quote"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "t:labels.text"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "t:labels.image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.testimonials.presets.default",
+      "category": "Coffee",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "朝のコーヒーが目覚める楽しみになりました。エチオピアが特にお気に入りです。",
+            "name": "R.S."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "焙煎日が印字されて届くのが安心。スキップも 1 タップで完了します。",
+            "name": "D.M."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "quote": "定期便を止めなくても、月ごとにブレンドを変えられるのが便利です。",
+            "name": "A.T."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
