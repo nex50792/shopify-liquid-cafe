@@ -51,7 +51,8 @@
   },
   "products": {
     "sold_out": "売り切れ",
-    "add_to_cart": "カートに追加"
+    "add_to_cart": "カートに追加",
+    "placeholder": "商品はまだありません"
   },
   "subscription": {
     "save_percent": "{{ percent }}% OFF",
